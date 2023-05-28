@@ -22,9 +22,9 @@ public class GameplayAudio : MonoBehaviour
         currentIdx = (currentIdx + 1) % orderedNotesToPlay.Count;
     }
 
-    public void PlayMenuMusic()
+    public void PlayMenuMusic(bool chords = false)
     {
-        StartCoroutine(MenuMusic());
+        StartCoroutine(MenuMusic(chords));
     }
 
     public void StopMenuMusic()
@@ -32,12 +32,19 @@ public class GameplayAudio : MonoBehaviour
         menuMusic = false;
     }
 
-    private IEnumerator MenuMusic()
+    private IEnumerator MenuMusic(bool chords)
     {
         menuMusic = true;
         while (menuMusic)
         {
-            audioSource.PlayOneShot(orderedNotesToPlay[Random.Range(0,orderedNotesToPlay.Count)]);
+            if (chords)
+            {
+                PlayRandomChord(Random.Range(0,4));
+            }
+            else
+            {
+                audioSource.PlayOneShot(orderedNotesToPlay[Random.Range(0,orderedNotesToPlay.Count)]);
+            }
             yield return new WaitForSeconds(Random.Range(0f, 1f));
         }
     }
